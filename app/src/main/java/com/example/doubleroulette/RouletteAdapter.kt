@@ -3,6 +3,7 @@ package com.example.doubleroulette
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.OrderedRealmCollection
@@ -15,6 +16,7 @@ class RouletteAdapter(data: OrderedRealmCollection<RouletteData>) : RealmRecycle
     }
 
     class ViewHolder(cell: View) : RecyclerView.ViewHolder(cell) {
+        val type: Button = cell.findViewById(android.R.id.button1)
         val label: TextView = cell.findViewById(android.R.id.text1)
         val color: TextView = cell.findViewById(android.R.id.text2)
     }
@@ -27,6 +29,7 @@ class RouletteAdapter(data: OrderedRealmCollection<RouletteData>) : RealmRecycle
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val rouletteData: RouletteData? = getItem(position)
+        holder.type.text = rouletteData?.type.toString()
         holder.label.text = rouletteData?.label
         holder.color.text = rouletteData?.colorHex
     }
