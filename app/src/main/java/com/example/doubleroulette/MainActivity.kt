@@ -37,6 +37,14 @@ class MainActivity : AppCompatActivity() {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
+
+        //セルをタップしたときのコールバック処理を追加
+        adapter.setOnItemClickListener { id ->
+            //idをRouletteDataEditActivityに渡していると言うこと
+            val intent = Intent(this, RouletteDataEditActivity::class.java)
+                .putExtra("roulette_id", id)
+            startActivity(intent)
+        }
     }
 
     override fun onDestroy() {

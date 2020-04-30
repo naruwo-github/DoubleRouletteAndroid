@@ -26,11 +26,10 @@ class RouletteDataEditActivity : AppCompatActivity() {
                 rouletteData.type = typeSwitch.isChecked
                 rouletteData.label = editItemName.text.toString()
                 rouletteData.colorHex = editItemColor.text.toString()
-
             }
             Snackbar.make(view, "Added!", Snackbar.LENGTH_SHORT)
                 .setAction("Back") { finish() }
-                .setTextColor(Color.YELLOW)
+                .setTextColor(Color.WHITE)
                 .show()
         }
     }

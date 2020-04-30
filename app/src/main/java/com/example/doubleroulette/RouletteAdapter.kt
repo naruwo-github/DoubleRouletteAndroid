@@ -10,6 +10,11 @@ import io.realm.OrderedRealmCollection
 import io.realm.RealmRecyclerViewAdapter
 
 class RouletteAdapter(data: OrderedRealmCollection<RouletteData>) : RealmRecyclerViewAdapter<RouletteData, RouletteAdapter.ViewHolder>(data, true) {
+    private var listener: ((Long?) -> Unit)? = null
+
+    fun setOnItemClickListener(listener: (Long?) -> Unit) {
+        this.listener = listener
+    }
 
     init {
         setHasStableIds(true)
@@ -32,6 +37,11 @@ class RouletteAdapter(data: OrderedRealmCollection<RouletteData>) : RealmRecycle
         //holder.type.text = rouletteData?.type.toString()
         holder.label.text = rouletteData?.label
         holder.color.text = rouletteData?.colorHex
+
+        //セルをタップしたら編集画面を呼ぶ
+        holder.itemView.setOnClickListener {
+            listener?.invoke(rouletteData?.id)
+        }
     }
 
     override fun getItemId(position: Int): Long {
