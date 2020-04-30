@@ -1,5 +1,6 @@
 package com.example.doubleroulette
 
+import android.content.res.ColorStateList
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -18,19 +19,47 @@ class RouletteDataEditActivity : AppCompatActivity() {
         setContentView(R.layout.activity_roulette_data_edit)
         realm = Realm.getDefaultInstance()
 
+        val rouletteId = intent?.getLongExtra("roulette_id", -1L)
+        if (rouletteId != -1L) {
+            val rouletteData = realm.where<RouletteData>()
+                .equalTo("id", rouletteId).findFirst()
+            typeSwitch.isChecked = rouletteData?.type!!
+            editItemName.setText(rouletteData?.label)
+            editItemColor.setText(rouletteData?.colorHex)
+        }
+
         saveButton.setOnClickListener { view: View ->
-            realm.executeTransaction { db: Realm ->
-                val maxId = db.where<RouletteData>().max("id")
-                val nextId = (maxId?.toLong() ?: 0L) + 1
-                val rouletteData = db.createObject<RouletteData>(nextId)
-                rouletteData.type = typeSwitch.isChecked
-                rouletteData.label = editItemName.text.toString()
-                rouletteData.colorHex = editItemColor.text.toString()
+            when (rouletteId) {
+                //新しいセルの処理
+                -1L -> {
+                    realm.executeTransaction { db: Realm ->
+                        val maxId = db.where<RouletteData>().max("id")
+                        val nextId = (maxId?.toLong() ?: 0L) + 1
+                        val rouletteData = db.createObject<RouletteData>(nextId)
+                        rouletteData.type = typeSwitch.isChecked
+                        rouletteData.label = editItemName.text.toString()
+                        rouletteData.colorHex = editItemColor.text.toString()
+                    }
+                    Snackbar.make(view, "Added!", Snackbar.LENGTH_SHORT)
+                        .setAction("Back") { finish() }
+                        .setTextColor(Color.WHITE)
+                        .show()
+                }
+                else -> {
+                    //既存のセルの処理
+                    realm.executeTransaction { db: Realm ->
+                        val rouletteData = db.where<RouletteData>()
+                            .equalTo("id", rouletteId).findFirst()
+                        rouletteData?.type = typeSwitch.isChecked
+                        rouletteData?.label = editItemName.text.toString()
+                        rouletteData?.colorHex = editItemColor.text.toString()
+                    }
+                    Snackbar.make(view, "Modified!", Snackbar.LENGTH_SHORT)
+                        .setAction("Back") { finish() }
+                        .setTextColor(Color.WHITE)
+                        .show()
+                }
             }
-            Snackbar.make(view, "Added!", Snackbar.LENGTH_SHORT)
-                .setAction("Back") { finish() }
-                .setTextColor(Color.WHITE)
-                .show()
         }
     }
 
