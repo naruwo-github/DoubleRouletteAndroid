@@ -10,13 +10,18 @@ import io.realm.OrderedRealmCollection
 import io.realm.RealmRecyclerViewAdapter
 
 class RouletteAdapter(data: OrderedRealmCollection<RouletteData>) : RealmRecyclerViewAdapter<RouletteData, RouletteAdapter.ViewHolder>(data, true) {
+    private var listener: ((Long?) -> Unit)? = null
+
+    fun setOnItemClickListener(listener: (Long?) -> Unit) {
+        this.listener = listener
+    }
 
     init {
         setHasStableIds(true)
     }
 
     class ViewHolder(cell: View) : RecyclerView.ViewHolder(cell) {
-        val type: Button = cell.findViewById(android.R.id.button1)
+        //val type: Button = cell.findViewById(android.R.id.button1)
         val label: TextView = cell.findViewById(android.R.id.text1)
         val color: TextView = cell.findViewById(android.R.id.text2)
     }
@@ -29,9 +34,14 @@ class RouletteAdapter(data: OrderedRealmCollection<RouletteData>) : RealmRecycle
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val rouletteData: RouletteData? = getItem(position)
-        holder.type.text = rouletteData?.type.toString()
+        //holder.type.text = rouletteData?.type.toString()
         holder.label.text = rouletteData?.label
         holder.color.text = rouletteData?.colorHex
+
+        //セルをタップしたら編集画面を呼ぶ
+        holder.itemView.setOnClickListener {
+            listener?.invoke(rouletteData?.id)
+        }
     }
 
     override fun getItemId(position: Int): Long {

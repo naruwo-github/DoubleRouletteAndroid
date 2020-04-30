@@ -9,4 +9,10 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="switch_text">Inner</string>
+    <string name="typeText_text">Inner ON/OFF</string>
+    <string name="labelText_text">Item Name</string>
+    <string name="color_text">Color</string>
+    <string name="save_text">Save</string>
+    <string name="delete_text">delete</string>
 </resources>
