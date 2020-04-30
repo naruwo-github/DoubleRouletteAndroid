@@ -26,6 +26,9 @@ class RouletteDataEditActivity : AppCompatActivity() {
             typeSwitch.isChecked = rouletteData?.type!!
             editItemName.setText(rouletteData?.label)
             editItemColor.setText(rouletteData?.colorHex)
+            deleteButton.visibility = View.VISIBLE
+        } else {
+            deleteButton.visibility = View.INVISIBLE
         }
 
         saveButton.setOnClickListener { view: View ->
@@ -60,6 +63,18 @@ class RouletteDataEditActivity : AppCompatActivity() {
                         .show()
                 }
             }
+        }
+
+        deleteButton.setOnClickListener { view: View ->
+            realm.executeTransaction { db: Realm ->
+                db.where<RouletteData>().equalTo("id", rouletteId)
+                    ?.findFirst()
+                    ?.deleteFromRealm()
+            }
+            Snackbar.make(view, "Deleted!", Snackbar.LENGTH_SHORT)
+                .setAction("Back") { finish() }
+                .setActionTextColor(Color.WHITE)
+                .show()
         }
     }
 
