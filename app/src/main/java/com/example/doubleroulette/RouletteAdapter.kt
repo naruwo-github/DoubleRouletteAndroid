@@ -1,5 +1,6 @@
 package com.example.doubleroulette
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,8 +36,9 @@ class RouletteAdapter(data: OrderedRealmCollection<RouletteData>) : RealmRecycle
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val rouletteData: RouletteData? = getItem(position)
         //holder.type.text = rouletteData?.type.toString()
-        holder.label.text = rouletteData?.label
-        holder.color.text = rouletteData?.colorHex
+        holder.label.text = "Item: " + rouletteData?.label
+        holder.color.text = "Color: " + rouletteData?.colorHex
+        holder.color.setBackgroundColor(Color.parseColor("#" + rouletteData?.colorHex))
 
         //セルをタップしたら編集画面を呼ぶ
         holder.itemView.setOnClickListener {

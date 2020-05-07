@@ -30,6 +30,7 @@ class RouletteDataEditActivity : AppCompatActivity() {
         } else {
             deleteButton.visibility = View.INVISIBLE
         }
+        colorButton.setBackgroundColor(Color.parseColor("#"+editItemColor.text.toString()))
 
         saveButton.setOnClickListener { view: View ->
             when (rouletteId) {
