@@ -34,8 +34,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         playButton.setOnClickListener {view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            val intent = Intent(this, RouletteActivity::class.java)
+            startActivity(intent)
+//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                .setAction("Action", null).show()
         }
 
         //セルをタップしたときのコールバック処理を追加
